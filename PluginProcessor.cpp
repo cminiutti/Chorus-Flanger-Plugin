@@ -42,6 +42,7 @@ ChorusFlangerAudioProcessor::~ChorusFlangerAudioProcessor()
 		delete[] mCircularBufferLeft;
 		mCircularBufferLeft == nullptr;
 	}
+
 	if (mCircularBufferLeft != nullptr)
 	{
 		delete[] mCircularBufferRight;
@@ -58,12 +59,26 @@ void ChorusFlangerAudioProcessor::prepareToPlay (double sampleRate, int samplesP
 	// Calculate circular buffer length
 	mCircularBufferLength = sampleRate * MAX_DELAY_TIME;
 
+	// Delete left delay buffers
+	if (mCircularBufferLeft != nullptr)
+	{
+		delete[] mCircularBufferLeft;
+		mCircularBufferLeft == nullptr;
+	}
+
 	// Initialize left buffer
 	if (mCircularBufferLeft == nullptr)
 		mCircularBufferLeft = new float[(int)mCircularBufferLength];
 
 	// Clear any junk data
 	zeromem(mCircularBufferLeft, mCircularBufferLength * sizeof(float));
+
+	// Delete right buffer
+	if (mCircularBufferLeft != nullptr)
+	{
+		delete[] mCircularBufferRight;
+		mCircularBufferRight == nullptr;
+	}
 
 	// Initialize right buffer
 	if (mCircularBufferRight == nullptr)
